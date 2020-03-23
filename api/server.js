@@ -1,9 +1,11 @@
 const express = require('express');
 const helmet = require('helmet');
-const cors = requier('cors');
-const sessions = require('express-session');
+const cors = require('cors');
+const session = require('express-session');
 
 const usersRouter = require('../users/users-router.js');
+const authRouter = require('../auth/router.js');
+const restricted = require('../auth/restricted-middleware.js');
 
 const server = express();
 
@@ -26,7 +28,7 @@ server.use(cors());
 server.use(session(sessionConfig));
 
 server.use('/api/users', restricted, usersRouter);
-
+server.use('/api/auth', authRouter);
 
 server.get('/', (req, res) => {
   res.json({ api: 'running' })
